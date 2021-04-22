@@ -6,7 +6,7 @@
 
 {-# LANGUAGE Rank2Types #-}
 
-module Interpreter (evalBlock, indices, indicesNoIO, evalModuleInterp,
+module Interpreter (evalBlock, indices, indicesNoIO, -- evalModuleInterp,
                     indexSetSize) where
 
 import Control.Monad
@@ -21,7 +21,7 @@ import Foreign.Marshal.Alloc
 import CUDA
 import Cat
 import Syntax
-import Env
+import Name
 import PPrint
 import Builder
 import Util (enumerate, restructure)
@@ -33,27 +33,31 @@ foreign import ccall "threefry2x32"  c_threefry :: Int64 -> Int64 -> Int64
 
 type InterpM = IO
 
-evalModuleInterp :: SubstEnv -> Module -> InterpM Bindings
-evalModuleInterp env (Module _ decls bindings) = do
-  env' <- catFoldM evalDecl env decls
-  return $ subst (env <> env', mempty) bindings
+-- TODO: should insist that the target name space is empty because we shouldn't
+-- have any free vars?
+-- evalModuleInterp :: SubstEnv i o -> Module i l -> InterpM Bindings
+-- evalModuleInterp env (Module _ decls bindings) = do
+--   env' <- catFoldM evalDecl env decls
+--   return $ subst (env <> env', mempty) bindings
 
-evalBlock :: SubstEnv -> Block -> InterpM Atom
-evalBlock env (Block decls result) = do
-  env' <- catFoldM evalDecl env decls
-  evalExpr env $ subst (env <> env', mempty) result
+evalBlock :: SubstEnv i o -> Block i -> InterpM (Atom o)
+evalBlock = undefined
+-- evalBlock env (Block decls result) = do
+--   env' <- catFoldM evalDecl env decls
+--   evalExpr env $ subst (env <> env', mempty) result
 
-evalDecl :: SubstEnv -> Decl -> InterpM SubstEnv
-evalDecl env (Let _ v rhs) = liftM (v @>) $ evalExpr env rhs'
-  where rhs' = subst (env, mempty) rhs
+evalDecl :: SubstEnv i o -> Decl i l -> InterpM (SubstEnv l o)
+evalDecl env (Let _ v rhs) = do
+  result <- evalExpr env rhs
+  return $ extendEnv v result env
 
-evalExpr :: SubstEnv -> Expr -> InterpM Atom
+evalExpr :: SubstEnv i o -> Expr i -> InterpM (Atom o)
 evalExpr env expr = case expr of
-  App f x   -> case f of
-    Lam a -> evalBlock env $ snd $ applyAbs a x
-    _     -> error $ "Expected a fully evaluated function value: " ++ pprint f
-  Atom atom -> return $ atom
-  Op op     -> evalOp op
+  -- App f x   -> case f of
+  --   Lam a -> evalBlock env $ withoutArrow $ applyAbs a x
+  --   _     -> error $ "Expected a fully evaluated function value: " ++ pprint f
+  -- Atom atom -> return $ atom
+  -- Op op     -> evalOp op
   Case e alts _ -> case e of
     DataCon _ _ con args ->
       evalBlock env $ applyNaryAbs (alts !! con) args
@@ -66,11 +70,11 @@ evalExpr env expr = case expr of
         evalBlock env $ applyNaryAbs (alts !! i) (xss !! i)
       _ -> error $ "Not implemented: SumAsProd with tag " ++ pprint expr
     _ -> error $ "Unexpected scrutinee: " ++ pprint e
-  Hof hof -> case hof of
-    RunIO ~(Lam (Abs _ (_, body))) -> evalBlock env body
-    _ -> error $ "Not implemented: " ++ pprint expr
+  -- Hof hof -> case hof of
+  --   RunIO (Lam (Abs _ (WithArrow _ body))) -> evalBlock env body
+  --   _ -> error $ "Not implemented: " ++ pprint expr
 
-evalOp :: Op -> InterpM Atom
+evalOp :: Op n -> InterpM (Atom n)
 evalOp expr = case expr of
   ScalarBinOp op x y -> return $ case op of
     IAdd -> applyIntBinOp   (+) x y
@@ -114,10 +118,10 @@ evalOp expr = case expr of
 -- We can use this when we know we won't be dereferencing pointers. A better
 -- approach might be to have a typeclass for the pointer dereferencing that the
 -- interpreter does, with a dummy instance that throws an error if you try.
-indicesNoIO :: Type -> [Atom]
+indicesNoIO :: Type n -> [Atom n]
 indicesNoIO = unsafePerformIO . indices
 
-indices :: Type -> IO [Atom]
+indices :: Type n -> IO [Atom n]
 indices ty = do
   n <- indexSetSize ty
   case ty of
@@ -145,18 +149,19 @@ indices ty = do
         Variant (NoExt types) label i <$> args) zipped
     _ -> error $ "Not implemented: " ++ pprint ty
 
-indexSetSize :: Type -> InterpM Int
+indexSetSize :: Type n -> InterpM Int
 indexSetSize ty = do
   IdxRepVal l <- evalBuilder (indexSetSizeE ty)
   return $ fromIntegral l
 
-evalBuilder :: BuilderT InterpM Atom -> InterpM Atom
-evalBuilder builder = do
-  (atom, (_, decls)) <- runBuilderT builder mempty
-  evalBlock mempty $ Block decls (Atom atom)
+evalBuilder :: BuilderT InterpM n (Atom n) -> InterpM (Atom n)
+evalBuilder = undefined
+-- evalBuilder builder = do
+--   (atom, (_, decls)) <- runBuilderT builder mempty
+--   evalBlock mempty $ Block decls (Atom atom)
 
-pattern Int64Val :: Int64 -> Atom
+pattern Int64Val :: Int64 -> Atom n
 pattern Int64Val x = Con (Lit (Int64Lit x))
 
-pattern Float64Val :: Double -> Atom
+pattern Float64Val :: Double -> Atom n
 pattern Float64Val x = Con (Lit (Float64Lit x))

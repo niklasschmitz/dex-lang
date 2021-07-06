@@ -45,6 +45,7 @@ nav ol {
 
 #main-output {
   max-width: var(--main-width);
+  margin: auto;
 }
 
 .cell {
@@ -340,7 +341,7 @@ Right now our table is not so interesting :)</p>
 </div></div><div class="cell"><div class="code-block"><span class="keyword">import</span> plot
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="command">:html</span> matshow x
-</div><img class="plot-img" src="data:image/png;base64, "></div><div class="cell"><div class="code-block">
+</div><img class="plot-img" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAgAAAADCAIAAAAhqtkfAAAAAXNSR0IArs4c6QAAABRJREFUCJljrK+vZ8AGmLCK4pMAAG3RAYMAgeWyAAAAAElFTkSuQmCC"></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="prose-block"><p>Once we have an table, we can use it in new comprehensions. For example,
 let's try to add <code>5</code> to each table element. In Python, one might write this as:</p>
 </div></div><div class="cell"><div class="prose-block"><p><code>x5 = [[x[i][j] + 5.0 for j in range(width)] for i in range(height)]</code></p>
@@ -434,7 +435,7 @@ Expected: (Fin 3)
 function. We can use this to make an image gradient.</p>
 </div></div><div class="cell"><div class="code-block">gradient <span class="symbol">=</span> <span class="keyword">for</span> i<span class="symbol">:</span><span class="type-name">Height</span><span class="symbol">.</span> <span class="keyword">for</span> j<span class="symbol">:</span><span class="type-name">Width</span><span class="symbol">.</span> <span class="type-name">IToF</span> ((ordinal i) <span class="symbol">+</span> (ordinal j))
 </div></div><div class="cell"><div class="code-block"><span class="command">:html</span> matshow gradient
-</div><img class="plot-img" src="data:image/png;base64, "></div><div class="cell"><div class="code-block">
+</div><img class="plot-img" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAgAAAADCAIAAAAhqtkfAAAAAXNSR0IArs4c6QAAACNJREFUCJljZGBgkJGRkZGRkZWVRWYwYhWVkZFhwioqKysLABMOB6YI4m+9AAAAAElFTkSuQmCC"></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="prose-block"><p>As we have seen, indices are not limited to only integers. Many different Dex
 types are valid index types. For example, we declared table <code>y</code> as having a
 pair of integers as its index type (<code>a &amp; b</code> means tuple type), so indexing
@@ -459,7 +460,8 @@ ranges.</p>
 </div></div><div class="cell"><div class="prose-block"><p>One use case of packing and unpacking table indices is that it allows us to
 change the order of the axes. This is useful for applying functions on tables.</p>
 </div></div><div class="cell"><div class="prose-block"><p>For instance, we saw the <code>mean</code> function above which sums over the first axis
-of an table. We can apply <code>mean</code> to <code>y</code> to produce the sum over 24 elements:</p>
+of an table. We can apply <code>mean</code> to <code>y</code> to produce the mean average over 24
+elements:</p>
 </div></div><div class="cell"><div class="code-block"><span class="command">:t</span> y
 </div><div class="result-block">((Fin 3 &amp; Fin 8) =&gt; Float32)</div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="command">:t</span> mean y
@@ -716,14 +718,14 @@ constructor in this case).</p>
 </div></div><div class="cell"><div class="prose-block"><p>That leaves: <code>withState</code>. This function uses the <code>State</code> effect, enabling us
 to introduce imperative variables into the computation.
 <code>withState</code> takes an initial value <code>init</code> and a body function taking a
-&quot;mutable value&quot; reference (<code>acc</code> here), and returns a pair of the body
-function's result and the final value. Here's a simple example:</p>
+&quot;mutable value&quot; reference (<code>acc</code> here), and returns the body function's result.
+Here's a simple example:</p>
 </div></div><div class="cell"><div class="code-block">withState 10 <span class="symbol">$</span> <span class="symbol">\</span> state<span class="symbol">.</span>
      state <span class="symbol">:=</span> 30
      state <span class="symbol">:=</span> 10
      get state
 </div><div class="result-block">10</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="prose-block"><p>The element returned pair is the body function's result (<code>10</code>)</p>
+</div></div><div class="cell"><div class="prose-block"><p>The element returned is the body function's result (<code>10</code>)</p>
 </div></div><div class="cell"><div class="prose-block"><p>Finally: this is a good point to talk a bit about some other operators in Dex.
 In the examples above, we see two types of equal sign operators: <code>=</code> and <code>:=</code>.
 The first is the <code>let</code> operator that creates an immutable assignment (a

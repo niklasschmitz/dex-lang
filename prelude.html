@@ -45,6 +45,7 @@ nav ol {
 
 #main-output {
   max-width: var(--main-width);
+  margin: auto;
 }
 
 .cell {
@@ -313,7 +314,9 @@ render(RENDER_MODE.STATIC);"></script></head><body><div id="main-output"><div cl
 </div></div><div class="cell"><div class="code-block"><span class="type-name">Float64</span> <span class="symbol">=</span> %<span class="type-name">Float64</span>
 </div></div><div class="cell"><div class="code-block"><span class="type-name">Float32</span> <span class="symbol">=</span> %<span class="type-name">Float32</span>
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="type-name">Word8</span> <span class="symbol">=</span> %<span class="type-name">Word8</span>
+</div></div><div class="cell"><div class="code-block"><span class="type-name">Word8</span>  <span class="symbol">=</span> %<span class="type-name">Word8</span>
+</div></div><div class="cell"><div class="code-block"><span class="type-name">Word32</span> <span class="symbol">=</span> %<span class="type-name">Word32</span>
+</div></div><div class="cell"><div class="code-block"><span class="type-name">Word64</span> <span class="symbol">=</span> %<span class="type-name">Word64</span>
 </div></div><div class="cell"><div class="code-block"><span class="type-name">Byte</span> <span class="symbol">=</span> <span class="type-name">Word8</span>
 </div></div><div class="cell"><div class="code-block"><span class="type-name">Char</span> <span class="symbol">=</span> <span class="type-name">Byte</span>
 </div></div><div class="cell"><div class="code-block">
@@ -335,10 +338,44 @@ render(RENDER_MODE.STATIC);"></script></head><body><div id="main-output"><div cl
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> <span class="type-name">IToI64</span> (x <span class="symbol">:</span> <span class="type-name">Int</span>)     <span class="symbol">:</span> <span class="type-name">Int64</span>   <span class="symbol">=</span> internalCast _ x
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> <span class="type-name">IToI32</span> (x <span class="symbol">:</span> <span class="type-name">Int</span>)     <span class="symbol">:</span> <span class="type-name">Int32</span>   <span class="symbol">=</span> internalCast _ x
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> <span class="type-name">IToW8</span>  (x <span class="symbol">:</span> <span class="type-name">Int</span>)     <span class="symbol">:</span> <span class="type-name">Word8</span>   <span class="symbol">=</span> internalCast _ x
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> <span class="type-name">IToW32</span> (x <span class="symbol">:</span> <span class="type-name">Int</span>)     <span class="symbol">:</span> <span class="type-name">Word32</span>  <span class="symbol">=</span> internalCast _ x
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> <span class="type-name">IToW64</span> (x <span class="symbol">:</span> <span class="type-name">Int</span>)     <span class="symbol">:</span> <span class="type-name">Word64</span>  <span class="symbol">=</span> internalCast _ x
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> <span class="type-name">W32ToW64</span> (x <span class="symbol">:</span> <span class="type-name">Word32</span>)<span class="symbol">:</span> <span class="type-name">Word64</span>  <span class="symbol">=</span> internalCast _ x
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> <span class="type-name">IToF</span> (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Float</span> <span class="symbol">=</span> internalCast _ x
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> <span class="type-name">FToI</span> (x<span class="symbol">:</span><span class="type-name">Float</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> internalCast _ x
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> <span class="type-name">I64ToRawPtr</span> (x<span class="symbol">:</span><span class="type-name">Int64</span> ) <span class="symbol">:</span> <span class="type-name">RawPtr</span> <span class="symbol">=</span> internalCast _ x
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> <span class="type-name">RawPtrToI64</span> (x<span class="symbol">:</span><span class="type-name">RawPtr</span>) <span class="symbol">:</span> <span class="type-name">Int64</span>  <span class="symbol">=</span> internalCast _ x
+</div></div><div class="cell"><div class="prose-block"><h2>Bitwise operations</h2>
+</div></div><div class="cell"><div class="code-block"><span class="keyword">interface</span> <span class="type-name">Bits</span> a
+  (<span class="symbol">.&lt;&lt;.</span>)  <span class="symbol">:</span> a <span class="symbol">-&gt;</span> <span class="type-name">Int</span> <span class="symbol">-&gt;</span> a
+  (<span class="symbol">.&gt;&gt;.</span>)  <span class="symbol">:</span> a <span class="symbol">-&gt;</span> <span class="type-name">Int</span> <span class="symbol">-&gt;</span> a
+  (<span class="symbol">.|.</span>)   <span class="symbol">:</span> a <span class="symbol">-&gt;</span> a <span class="symbol">-&gt;</span> a
+  (<span class="symbol">.&amp;.</span>)   <span class="symbol">:</span> a <span class="symbol">-&gt;</span> a <span class="symbol">-&gt;</span> a
+  (<span class="symbol">.^.</span>)   <span class="symbol">:</span> a <span class="symbol">-&gt;</span> a <span class="symbol">-&gt;</span> a
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Bits</span> <span class="type-name">Word8</span>
+  (<span class="symbol">.&lt;&lt;.</span>)  <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %shl x (<span class="type-name">IToW8</span> y)
+  (<span class="symbol">.&gt;&gt;.</span>)  <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %shr x (<span class="type-name">IToW8</span> y)
+  (<span class="symbol">.|.</span>)   <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %or x y
+  (<span class="symbol">.&amp;.</span>)   <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %and x y
+  (<span class="symbol">.^.</span>)   <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %xor x y
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Bits</span> <span class="type-name">Word32</span>
+  (<span class="symbol">.&lt;&lt;.</span>)  <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %shl x (<span class="type-name">IToW32</span> y)
+  (<span class="symbol">.&gt;&gt;.</span>)  <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %shr x (<span class="type-name">IToW32</span> y)
+  (<span class="symbol">.|.</span>)   <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %or x y
+  (<span class="symbol">.&amp;.</span>)   <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %and x y
+  (<span class="symbol">.^.</span>)   <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %xor x y
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Bits</span> <span class="type-name">Word64</span>
+  (<span class="symbol">.&lt;&lt;.</span>)  <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %shl x (<span class="type-name">IToW64</span> y)
+  (<span class="symbol">.&gt;&gt;.</span>)  <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %shr x (<span class="type-name">IToW64</span> y)
+  (<span class="symbol">.|.</span>)   <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %or x y
+  (<span class="symbol">.&amp;.</span>)   <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %and x y
+  (<span class="symbol">.^.</span>)   <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %xor x y
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> lowWord  (x <span class="symbol">:</span> <span class="type-name">Word64</span>) <span class="symbol">:</span> <span class="type-name">Word32</span> <span class="symbol">=</span> internalCast _ (x <span class="symbol">.&gt;&gt;.</span> 32)
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> highWord (x <span class="symbol">:</span> <span class="type-name">Word64</span>) <span class="symbol">:</span> <span class="type-name">Word32</span> <span class="symbol">=</span> internalCast _ x
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="prose-block"><h3>Basic Arithmetic</h3>
 <h4>Add</h4>
@@ -377,6 +414,16 @@ This defines the <code>Add</code> <a href="https://en.wikipedia.org/wiki/Group_(
   sub <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %isub x y
   zero <span class="symbol">=</span> <span class="type-name">IToW8</span> 0
 </div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Add</span> <span class="type-name">Word32</span>
+  add <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %iadd x y
+  sub <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %isub x y
+  zero <span class="symbol">=</span> <span class="type-name">IToW32</span> 0
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Add</span> <span class="type-name">Word64</span>
+  add <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %iadd x y
+  sub <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> %isub x y
+  zero <span class="symbol">=</span> <span class="type-name">IToW64</span> 0
+</div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Add</span> <span class="type-name">Unit</span>
   add <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> ()
   sub <span class="symbol">=</span> <span class="symbol">\</span>x y<span class="symbol">.</span> ()
@@ -384,6 +431,16 @@ This defines the <code>Add</code> <a href="https://en.wikipedia.org/wiki/Group_(
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> [<span class="type-name">Add</span> a] <span class="type-name">Add</span> (n<span class="symbol">=&gt;</span>a)
   add <span class="symbol">=</span> <span class="symbol">\</span>xs ys<span class="symbol">.</span> <span class="keyword">for</span> i<span class="symbol">.</span> xs<span class="symbol">.</span>i <span class="symbol">+</span> ys<span class="symbol">.</span>i
+  sub <span class="symbol">=</span> <span class="symbol">\</span>xs ys<span class="symbol">.</span> <span class="keyword">for</span> i<span class="symbol">.</span> xs<span class="symbol">.</span>i <span class="symbol">-</span> ys<span class="symbol">.</span>i
+  zero <span class="symbol">=</span> <span class="keyword">for</span> _<span class="symbol">.</span> zero
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> [<span class="type-name">Add</span> a] <span class="type-name">Add</span> (i<span class="command">:n</span> <span class="symbol">=&gt;</span> (i<span class="symbol">..</span>) <span class="symbol">=&gt;</span> a)  <span class="comment">-- Upper triangular tables
+</span>  add <span class="symbol">=</span> <span class="symbol">\</span>xs ys<span class="symbol">.</span> <span class="keyword">for</span> i<span class="symbol">.</span> xs<span class="symbol">.</span>i <span class="symbol">+</span> ys<span class="symbol">.</span>i
+  sub <span class="symbol">=</span> <span class="symbol">\</span>xs ys<span class="symbol">.</span> <span class="keyword">for</span> i<span class="symbol">.</span> xs<span class="symbol">.</span>i <span class="symbol">-</span> ys<span class="symbol">.</span>i
+  zero <span class="symbol">=</span> <span class="keyword">for</span> _<span class="symbol">.</span> zero
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> [<span class="type-name">Add</span> a] <span class="type-name">Add</span> (i<span class="command">:n</span> <span class="symbol">=&gt;</span> (<span class="symbol">..</span>i) <span class="symbol">=&gt;</span> a)  <span class="comment">-- Lower triangular tables
+</span>  add <span class="symbol">=</span> <span class="symbol">\</span>xs ys<span class="symbol">.</span> <span class="keyword">for</span> i<span class="symbol">.</span> xs<span class="symbol">.</span>i <span class="symbol">+</span> ys<span class="symbol">.</span>i
   sub <span class="symbol">=</span> <span class="symbol">\</span>xs ys<span class="symbol">.</span> <span class="keyword">for</span> i<span class="symbol">.</span> xs<span class="symbol">.</span>i <span class="symbol">-</span> ys<span class="symbol">.</span>i
   zero <span class="symbol">=</span> <span class="keyword">for</span> _<span class="symbol">.</span> zero
 </div></div><div class="cell"><div class="code-block">
@@ -894,6 +951,10 @@ Many, but not all of these functions are <a href="https://en.wikipedia.org/wiki/
 </div></div><div class="cell"><div class="prose-block"><h2>Raw pointer operations</h2>
 </div></div><div class="cell"><div class="code-block"><span class="keyword">data</span> <span class="type-name">Ptr</span> a <span class="symbol">=</span> <span class="type-name">MkPtr</span> <span class="type-name">RawPtr</span>
 </div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> castPtr (ptr<span class="symbol">:</span> <span class="type-name">Ptr</span> a) <span class="symbol">:</span> <span class="type-name">Ptr</span> b <span class="symbol">=</span>
+  (<span class="type-name">MkPtr</span> rawPtr) <span class="symbol">=</span> ptr
+  <span class="type-name">MkPtr</span> rawPtr
+</div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="comment">-- Is there a better way to select the right instance for `storageSize`??
 </span></div></div><div class="cell"><div class="code-block"><span class="keyword">data</span> <span class="type-name">TypeVehicle</span> a <span class="symbol">=</span> <span class="type-name">MkTypeVehicle</span>
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> typeVehicle (a<span class="symbol">:</span><span class="type-name">Type</span>) <span class="symbol">:</span> <span class="type-name">TypeVehicle</span> a <span class="symbol">=</span> <span class="type-name">MkTypeVehicle</span>
@@ -915,6 +976,11 @@ Many, but not all of these functions are <a href="https://en.wikipedia.org/wiki/
 </div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Storable</span> <span class="type-name">Int32</span>
   store <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr) x<span class="symbol">.</span> %ptrStore (internalCast %<span class="type-name">Int32Ptr</span> ptr) x
   load  <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr)  <span class="symbol">.</span> %ptrLoad  (internalCast %<span class="type-name">Int32Ptr</span> ptr)
+  storageSize_ <span class="symbol">=</span> const 4
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Storable</span> <span class="type-name">Float32</span>
+  store <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr) x<span class="symbol">.</span> %ptrStore (internalCast %<span class="type-name">Float32Ptr</span> ptr) x
+  load <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr)   <span class="symbol">.</span> %ptrLoad  (internalCast %<span class="type-name">Float32Ptr</span> ptr)
   storageSize_ <span class="symbol">=</span> const 4
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Storable</span> (<span class="type-name">Ptr</span> a)
@@ -1010,12 +1076,8 @@ Many, but not all of these functions are <a href="https://en.wikipedia.org/wiki/
 </div></div><div class="cell"><div class="code-block"><span class="comment">-- `combine` should be a commutative and associative, and form a
 </span></div></div><div class="cell"><div class="code-block"><span class="comment">-- commutative monoid with `identity`
 </span></div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> reduce (identity<span class="command">:a</span>) (combine<span class="symbol">:</span>(a<span class="symbol">-&gt;</span>a<span class="symbol">-&gt;</span>a)) (xs<span class="command">:n</span><span class="symbol">=&gt;</span>a) <span class="symbol">:</span> a <span class="symbol">=</span>
-  <span class="type-name">A</span> <span class="symbol">=</span> a <span class="comment">-- XXX: Typing `Monoid a` below would quantify it over a,
-</span>        <span class="comment">--      which we don&#39;t want.
-</span>  named<span class="symbol">-</span><span class="keyword">instance</span> reduceMonoid <span class="symbol">:</span> <span class="type-name">Monoid</span> <span class="type-name">A</span>
-    mempty <span class="symbol">=</span> identity
-    mcombine <span class="symbol">=</span> combine
-  yieldAccum reduceMonoid <span class="symbol">\</span>total<span class="symbol">.</span> <span class="keyword">for</span> i<span class="symbol">.</span> total <span class="symbol">+=</span> xs<span class="symbol">.</span>i
+  <span class="comment">-- TODO: implement with the accumulator effect
+</span>  fold identity (<span class="symbol">\</span>i c<span class="symbol">.</span> combine c xs<span class="symbol">.</span>i)
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="comment">-- TODO: call this `scan` and call the current `scan` something else
 </span></div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> scan&#39; (init<span class="command">:a</span>) (body<span class="command">:n</span><span class="symbol">-&gt;</span>a<span class="symbol">-&gt;</span>a) <span class="symbol">:</span> n<span class="symbol">=&gt;</span>a <span class="symbol">=</span> snd <span class="symbol">$</span> scan init <span class="symbol">\</span>i x<span class="symbol">.</span> dup (body i x)
@@ -1052,49 +1114,8 @@ Many, but not all of these functions are <a href="https://en.wikipedia.org/wiki/
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> inner (x<span class="command">:n</span><span class="symbol">=&gt;</span><span class="type-name">Float</span>) (mat<span class="command">:n</span><span class="symbol">=&gt;</span>m<span class="symbol">=&gt;</span><span class="type-name">Float</span>) (y<span class="command">:m</span><span class="symbol">=&gt;</span><span class="type-name">Float</span>) <span class="symbol">:</span> <span class="type-name">Float</span> <span class="symbol">=</span>
   fsum <span class="keyword">view</span> (i<span class="symbol">,</span>j)<span class="symbol">.</span> x<span class="symbol">.</span>i <span class="symbol">*</span> mat<span class="symbol">.</span>i<span class="symbol">.</span>j <span class="symbol">*</span> y<span class="symbol">.</span>j
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> eye [<span class="type-name">Eq</span> n<span class="symbol">,</span> <span class="type-name">Add</span> a<span class="symbol">,</span> <span class="type-name">Mul</span> a] <span class="symbol">:</span> n<span class="symbol">=&gt;</span>n<span class="symbol">=&gt;</span>a <span class="symbol">=</span>
-  <span class="keyword">for</span> i j<span class="symbol">.</span> select (i <span class="symbol">==</span> j) one zero
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="prose-block"><h2>Pseudorandom number generator utilities</h2>
-<p>Dex does not use a stateful random number generator.
-Rather it uses what is known as a split-able random number generator, which is based on a hash function.
-Dex's PRNG system is modelled directly after <a href="https://github.com/google/jax/blob/master/design_notes/prng.md">JAX's</a>, which is based on a well established but shockingly underused idea from the functional programming community: the splittable PRNG. It's a good idea for many reasons, but it's especially helpful in a parallel setting. If you want to read more, <a href="http://publications.lib.chalmers.se/records/fulltext/183348/local_183348.pdf">Splittable pseudorandom number generators using cryptographic hashing</a> describes the splitting model itself and <a href="http://www.thesalmons.org/john/random123/papers/random123sc11.pdf">D.E. Shaw Research's counter-based PRNG</a> proposes the particular hash function we use.</p>
-</div></div><div class="cell"><div class="prose-block"><h3>Key functions</h3>
-</div></div><div class="cell"><div class="code-block"><span class="comment">-- TODO: newtype
-</span></div></div><div class="cell"><div class="code-block"><span class="type-name">Key</span> <span class="symbol">=</span> <span class="type-name">Int64</span>
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> hash (x<span class="symbol">:</span><span class="type-name">Key</span>) (y<span class="symbol">:</span><span class="type-name">Int32</span>) <span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">=</span> unsafeIO <span class="keyword">do</span>
-  y64 <span class="symbol">=</span> <span class="type-name">IToI64</span> y
-  %ffi threefry2x32 <span class="type-name">Int64</span> x y64
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> newKey (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">=</span> hash (<span class="type-name">IToI64</span> 0) x
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> many (f<span class="symbol">:</span><span class="type-name">Key</span><span class="symbol">-&gt;</span>a) (k<span class="symbol">:</span><span class="type-name">Key</span>) (i<span class="command">:n</span>) <span class="symbol">:</span> a <span class="symbol">=</span> f (hash k (ordinal i))
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> ixkey (k<span class="symbol">:</span><span class="type-name">Key</span>) (i<span class="command">:n</span>) <span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">=</span> hash k (ordinal i)
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> ixkey2 (k<span class="symbol">:</span><span class="type-name">Key</span>) (i<span class="command">:n</span>) (j<span class="command">:m</span>) <span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">=</span> hash (hash k (ordinal i)) (ordinal j)
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> splitKey (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Fin</span> n <span class="symbol">=&gt;</span> <span class="type-name">Key</span> <span class="symbol">=</span> <span class="keyword">for</span> i<span class="symbol">.</span> ixkey k i
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="prose-block"><h3>Sample Generators</h3>
-<p>These functions generate samples taken from, different distributions.
-Such as <code>randMat</code> with samples from the distribution of floating point matrices where each element is taken from a i.i.d. uniform distribution.</p>
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> rand (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Float</span> <span class="symbol">=</span>  unsafeIO <span class="keyword">do</span> <span class="type-name">F64ToF</span> <span class="symbol">$</span> %ffi randunif <span class="type-name">Float64</span> k
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randVec (n<span class="symbol">:</span><span class="type-name">Int</span>) (f<span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">-&gt;</span> a) (k<span class="symbol">:</span> <span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Fin</span> n <span class="symbol">=&gt;</span> a <span class="symbol">=</span>
-  <span class="keyword">for</span> i<span class="symbol">:</span>(<span class="type-name">Fin</span> n)<span class="symbol">.</span> f (ixkey k i)
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randMat (n<span class="symbol">:</span><span class="type-name">Int</span>) (m<span class="symbol">:</span><span class="type-name">Int</span>) (f<span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">-&gt;</span> a) (k<span class="symbol">:</span> <span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Fin</span> n <span class="symbol">=&gt;</span> <span class="type-name">Fin</span> m <span class="symbol">=&gt;</span> a <span class="symbol">=</span>
-  <span class="keyword">for</span> i j<span class="symbol">.</span> f (ixkey2 k i j)
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randn (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Float</span> <span class="symbol">=</span>
-  [k1<span class="symbol">,</span> k2] <span class="symbol">=</span> splitKey k
-  u1 <span class="symbol">=</span> rand k1
-  u2 <span class="symbol">=</span> rand k2
-  sqrt ((<span class="symbol">-</span>2<span class="symbol">.</span>0) <span class="symbol">*</span> log u1) <span class="symbol">*</span> cos (2<span class="symbol">.</span>0 <span class="symbol">*</span> pi <span class="symbol">*</span> u2)
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="comment">-- TODO: Make this better...
-</span></div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randInt (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> (<span class="type-name">I64ToI</span> k) `mod` 2147483647
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> bern (p<span class="symbol">:</span><span class="type-name">Float</span>) (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Bool</span> <span class="symbol">=</span> rand k <span class="symbol">&lt;</span> p
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randnVec (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> n<span class="symbol">=&gt;</span><span class="type-name">Float</span> <span class="symbol">=</span>
-  <span class="keyword">for</span> i<span class="symbol">.</span> randn (ixkey k i)
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> eye [<span class="type-name">Add</span> a<span class="symbol">,</span> <span class="type-name">Mul</span> a] <span class="symbol">:</span> n<span class="symbol">=&gt;</span>n<span class="symbol">=&gt;</span>a <span class="symbol">=</span>
+  <span class="keyword">for</span> i j<span class="symbol">.</span> select (ordinal i <span class="symbol">==</span> ordinal j) one zero
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="prose-block"><h2>cumSum</h2>
 <p>TODO: Move this to be with reductions?
@@ -1148,8 +1169,9 @@ It's a kind of <code>scan</code>.</p>
   atol <span class="symbol">=</span> <span class="type-name">FToF64</span> 0<span class="symbol">.</span>00000001
   rtol <span class="symbol">=</span> <span class="type-name">FToF64</span> 0<span class="symbol">.</span>00001
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> [<span class="type-name">HasAllClose</span> t<span class="symbol">,</span> <span class="type-name">HasDefaultTolerance</span> t] <span class="type-name">HasAllClose</span> (n<span class="symbol">=&gt;</span>t)
-  allclose <span class="symbol">=</span> <span class="symbol">\</span>atol rtol a b<span class="symbol">.</span> all <span class="keyword">for</span> i<span class="command">:n</span><span class="symbol">.</span> (a<span class="symbol">.</span>i <span class="symbol">~~</span> b<span class="symbol">.</span>i)
+</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> [<span class="type-name">HasAllClose</span> t] <span class="type-name">HasAllClose</span> (n<span class="symbol">=&gt;</span>t)
+  allclose <span class="symbol">=</span> <span class="symbol">\</span>atol rtol a b<span class="symbol">.</span>
+    all <span class="keyword">for</span> i<span class="command">:n</span><span class="symbol">.</span> allclose atol<span class="symbol">.</span>i rtol<span class="symbol">.</span>i a<span class="symbol">.</span>i b<span class="symbol">.</span>i
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> [<span class="type-name">HasDefaultTolerance</span> t] <span class="type-name">HasDefaultTolerance</span> (n<span class="symbol">=&gt;</span>t)
   atol <span class="symbol">=</span> <span class="keyword">for</span> i<span class="symbol">.</span> atol
@@ -1465,6 +1487,9 @@ Nor does it promise a particular level of precision for numeric values.</p>
     (n<span class="symbol">,</span> ptr) <span class="symbol">=</span> %ffi showFloat64 (<span class="type-name">Int32</span> <span class="symbol">&amp;</span> <span class="type-name">RawPtr</span>) x
     stringFromCharPtr n <span class="symbol">$</span> <span class="type-name">MkPtr</span> ptr
 </div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> [<span class="type-name">Show</span> a<span class="symbol">,</span> <span class="type-name">Show</span> b] <span class="type-name">Show</span> (a <span class="symbol">&amp;</span> b)
+  show <span class="symbol">=</span> <span class="symbol">\</span>(a<span class="symbol">,</span> b)<span class="symbol">.</span> &quot;(&quot; <span class="symbol">&lt;&gt;</span> show a <span class="symbol">&lt;&gt;</span> &quot;<span class="symbol">,</span> &quot; <span class="symbol">&lt;&gt;</span> show b <span class="symbol">&lt;&gt;</span> &quot;)&quot;
+</div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="prose-block"><h2>pipe-like reverse function application</h2>
 <p>TODO: move this</p>
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> (<span class="symbol">|&gt;</span>) (x<span class="command">:a</span>) (f<span class="symbol">:</span> a <span class="symbol">-&gt;</span> b) <span class="symbol">:</span> b <span class="symbol">=</span> f x
@@ -1734,7 +1759,81 @@ Not to be confused with a partially applied function</p>
   numElts <span class="symbol">=</span> size n <span class="symbol">-</span> start
   toList <span class="symbol">$</span> slice xs start (<span class="type-name">Fin</span> numElts)
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="symbol">--</span><span class="type-name">TODO</span><span class="symbol">:</span> move this to be with other random number functions
+
+</div></div><div class="cell"><div class="prose-block"><h2>Pseudorandom number generator utilities</h2>
+<p>Dex does not use a stateful random number generator.
+Rather it uses what is known as a split-able random number generator, which is based on a hash function.
+Dex's PRNG system is modelled directly after <a href="https://github.com/google/jax/blob/master/design_notes/prng.md">JAX's</a>, which is based on a well established but shockingly underused idea from the functional programming community: the splittable PRNG. It's a good idea for many reasons, but it's especially helpful in a parallel setting. If you want to read more, <a href="http://publications.lib.chalmers.se/records/fulltext/183348/local_183348.pdf">Splittable pseudorandom number generators using cryptographic hashing</a> describes the splitting model itself and <a href="http://www.thesalmons.org/john/random123/papers/random123sc11.pdf">D.E. Shaw Research's counter-based PRNG</a> proposes the particular hash function we use.</p>
+</div></div><div class="cell"><div class="prose-block"><h3>Key functions</h3>
+</div></div><div class="cell"><div class="code-block"><span class="comment">-- TODO: newtype
+</span></div></div><div class="cell"><div class="code-block"><span class="type-name">Key</span> <span class="symbol">=</span> <span class="type-name">Word64</span>
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> threeFry2x32 (k<span class="symbol">:</span><span class="type-name">Word64</span>) (count<span class="symbol">:</span><span class="type-name">Word64</span>) <span class="symbol">:</span> <span class="type-name">Word64</span> <span class="symbol">=</span>
+  <span class="comment">-- Based on jax&#39;s threefry_2x32 by Matt Johnson and Peter Hawkins
+</span>  rotations1 <span class="symbol">=</span> [13<span class="symbol">,</span> 15<span class="symbol">,</span> 26<span class="symbol">,</span> 6]
+  rotations2 <span class="symbol">=</span> [17<span class="symbol">,</span> 29<span class="symbol">,</span> 16<span class="symbol">,</span> 24]
+
+  k0 <span class="symbol">=</span> lowWord k
+  k1 <span class="symbol">=</span> highWord k
+  <span class="comment">-- TODO: add a fromHex
+</span>  k2 <span class="symbol">=</span> k0 <span class="symbol">.^.</span> k1 <span class="symbol">.^.</span> (<span class="type-name">IToW32</span> 466688986) <span class="comment">-- 0x1BD11BDA
+</span>
+  x <span class="symbol">=</span> lowWord count
+  y <span class="symbol">=</span> highWord count
+  x <span class="symbol">=</span> x <span class="symbol">+</span> k0
+  y <span class="symbol">=</span> y <span class="symbol">+</span> k1
+
+  rotations <span class="symbol">=</span> [rotations1<span class="symbol">,</span> rotations2]
+  ks <span class="symbol">=</span> [k1<span class="symbol">,</span> k2<span class="symbol">,</span> k0]
+  (x<span class="symbol">,</span> y) <span class="symbol">=</span> yieldState (x<span class="symbol">,</span> y) <span class="symbol">\</span>ref<span class="symbol">.</span> <span class="keyword">for</span> i<span class="symbol">:</span>(<span class="type-name">Fin</span> 5)<span class="symbol">.</span>
+    <span class="keyword">for</span> j<span class="symbol">.</span>
+      (x<span class="symbol">,</span> y) <span class="symbol">=</span> get ref
+      rotationIndex <span class="symbol">=</span> unsafeFromOrdinal _ (mod (ordinal i) 2)
+      rot <span class="symbol">=</span> rotations<span class="symbol">.</span>rotationIndex<span class="symbol">.</span>j
+      x <span class="symbol">=</span> x <span class="symbol">+</span> y
+      y <span class="symbol">=</span> (y <span class="symbol">.&lt;&lt;.</span> rot) <span class="symbol">.|.</span> (y <span class="symbol">.&gt;&gt;.</span> (32 <span class="symbol">-</span> rot))
+      y <span class="symbol">=</span> x <span class="symbol">.^.</span> y
+      ref <span class="symbol">:=</span> (x<span class="symbol">,</span> y)
+    (x<span class="symbol">,</span> y) <span class="symbol">=</span> get ref
+    x <span class="symbol">=</span> x <span class="symbol">+</span> ks<span class="symbol">.</span>(unsafeFromOrdinal _ (mod (ordinal i) 3))
+    y <span class="symbol">=</span> y <span class="symbol">+</span> ks<span class="symbol">.</span>(unsafeFromOrdinal _ (mod ((ordinal i)<span class="symbol">+</span>1) 3)) <span class="symbol">+</span> <span class="type-name">IToW32</span> ((ordinal i)<span class="symbol">+</span>1)
+    ref <span class="symbol">:=</span> (x<span class="symbol">,</span> y)
+
+  (<span class="type-name">W32ToW64</span> x <span class="symbol">.&lt;&lt;.</span> 32) <span class="symbol">.|.</span> (<span class="type-name">W32ToW64</span> y)
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> hash (x<span class="symbol">:</span><span class="type-name">Key</span>) (y<span class="symbol">:</span><span class="type-name">Int32</span>) <span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">=</span>
+  y64 <span class="symbol">=</span> <span class="type-name">IToW64</span> y
+  threeFry2x32 x y64
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> newKey (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">=</span> hash (<span class="type-name">IToW64</span> 0) x
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> many (f<span class="symbol">:</span><span class="type-name">Key</span><span class="symbol">-&gt;</span>a) (k<span class="symbol">:</span><span class="type-name">Key</span>) (i<span class="command">:n</span>) <span class="symbol">:</span> a <span class="symbol">=</span> f (hash k (ordinal i))
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> ixkey (k<span class="symbol">:</span><span class="type-name">Key</span>) (i<span class="command">:n</span>) <span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">=</span> hash k (ordinal i)
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> ixkey2 (k<span class="symbol">:</span><span class="type-name">Key</span>) (i<span class="command">:n</span>) (j<span class="command">:m</span>) <span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">=</span> hash (hash k (ordinal i)) (ordinal j)
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> splitKey (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Fin</span> n <span class="symbol">=&gt;</span> <span class="type-name">Key</span> <span class="symbol">=</span> <span class="keyword">for</span> i<span class="symbol">.</span> ixkey k i
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="prose-block"><h3>Sample Generators</h3>
+<p>These functions generate samples taken from, different distributions.
+Such as <code>randMat</code> with samples from the distribution of floating point matrices where each element is taken from a i.i.d. uniform distribution.</p>
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> rand (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Float</span> <span class="symbol">=</span>  unsafeIO <span class="keyword">do</span> <span class="type-name">F64ToF</span> <span class="symbol">$</span> %ffi randunif <span class="type-name">Float64</span> k
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randVec (n<span class="symbol">:</span><span class="type-name">Int</span>) (f<span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">-&gt;</span> a) (k<span class="symbol">:</span> <span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Fin</span> n <span class="symbol">=&gt;</span> a <span class="symbol">=</span>
+  <span class="keyword">for</span> i<span class="symbol">:</span>(<span class="type-name">Fin</span> n)<span class="symbol">.</span> f (ixkey k i)
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randMat (n<span class="symbol">:</span><span class="type-name">Int</span>) (m<span class="symbol">:</span><span class="type-name">Int</span>) (f<span class="symbol">:</span> <span class="type-name">Key</span> <span class="symbol">-&gt;</span> a) (k<span class="symbol">:</span> <span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Fin</span> n <span class="symbol">=&gt;</span> <span class="type-name">Fin</span> m <span class="symbol">=&gt;</span> a <span class="symbol">=</span>
+  <span class="keyword">for</span> i j<span class="symbol">.</span> f (ixkey2 k i j)
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randn (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Float</span> <span class="symbol">=</span>
+  [k1<span class="symbol">,</span> k2] <span class="symbol">=</span> splitKey k
+  u1 <span class="symbol">=</span> rand k1
+  u2 <span class="symbol">=</span> rand k2
+  sqrt ((<span class="symbol">-</span>2<span class="symbol">.</span>0) <span class="symbol">*</span> log u1) <span class="symbol">*</span> cos (2<span class="symbol">.</span>0 <span class="symbol">*</span> pi <span class="symbol">*</span> u2)
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="comment">-- TODO: Make this better...
+</span></div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randInt (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> (internalCast <span class="type-name">Int</span> k) `mod` 2147483647
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> bern (p<span class="symbol">:</span><span class="type-name">Float</span>) (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> <span class="type-name">Bool</span> <span class="symbol">=</span> rand k <span class="symbol">&lt;</span> p
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randnVec (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> n<span class="symbol">=&gt;</span><span class="type-name">Float</span> <span class="symbol">=</span>
+  <span class="keyword">for</span> i<span class="symbol">.</span> randn (ixkey k i)
+</div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> randIdx (k<span class="symbol">:</span><span class="type-name">Key</span>) <span class="symbol">:</span> n <span class="symbol">=</span>
   unif <span class="symbol">=</span> rand k
   fromOrdinal n <span class="symbol">$</span> <span class="type-name">FToI</span> <span class="symbol">$</span> floor <span class="symbol">$</span> unif <span class="symbol">*</span> <span class="type-name">IToF</span> (size n)
@@ -1970,18 +2069,14 @@ Not to be confused with a partially applied function</p>
   pow    <span class="symbol">=</span> complex_pow
   lgamma <span class="symbol">=</span> complex_lgamma
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="prose-block"><h2>Bitwise operations</h2>
-</div></div><div class="cell"><div class="code-block"><span class="comment">-- TODO: type class like Haskell&#39;s `Bits`
-</span></div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> (<span class="symbol">&lt;&lt;</span>) (x<span class="symbol">:</span><span class="type-name">Byte</span>) (y<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Byte</span> <span class="symbol">=</span> %shl x (<span class="type-name">IToW8</span> y)
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> (<span class="symbol">&gt;&gt;</span>) (x<span class="symbol">:</span><span class="type-name">Byte</span>) (y<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Byte</span> <span class="symbol">=</span> %shr x (<span class="type-name">IToW8</span> y)
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> (<span class="symbol">.|.</span>) (x<span class="symbol">:</span><span class="type-name">Byte</span>) (y<span class="symbol">:</span><span class="type-name">Byte</span>) <span class="symbol">:</span> <span class="type-name">Byte</span> <span class="symbol">=</span> %or x y
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> (<span class="symbol">.&amp;.</span>) (x<span class="symbol">:</span><span class="type-name">Byte</span>) (y<span class="symbol">:</span><span class="type-name">Byte</span>) <span class="symbol">:</span> <span class="type-name">Byte</span> <span class="symbol">=</span> %and x y
-</div></div><div class="cell"><div class="code-block">
+
 </div></div><div class="cell"><div class="prose-block"><h2>Miscellaneous utilities</h2>
 <p>TODO: all of these should be in some other section</p>
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> reflect (i<span class="command">:n</span>) <span class="symbol">:</span> n <span class="symbol">=</span>
+  unsafeFromOrdinal n ((size n) <span class="symbol">-</span> 1 <span class="symbol">-</span> ordinal i)
+</div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> reverse (x<span class="command">:n</span><span class="symbol">=&gt;</span>a) <span class="symbol">:</span> n<span class="symbol">=&gt;</span>a <span class="symbol">=</span>
-  s <span class="symbol">=</span> size n
-  <span class="keyword">for</span> i<span class="symbol">.</span> x<span class="symbol">.</span>((s <span class="symbol">-</span> 1 <span class="symbol">-</span> ordinal i)<span class="symbol">@</span>_)
+  <span class="keyword">for</span> i<span class="symbol">.</span> x<span class="symbol">.</span>(reflect i)
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> padTo (m<span class="symbol">:</span><span class="type-name">Type</span>) (x<span class="command">:a</span>) (xs<span class="command">:n</span><span class="symbol">=&gt;</span>a) <span class="symbol">:</span> (m<span class="symbol">=&gt;</span>a) <span class="symbol">=</span>
   n&#39; <span class="symbol">=</span> size n
@@ -1992,6 +2087,57 @@ Not to be confused with a partially applied function</p>
       <span class="type-name">False</span> <span class="symbol">-&gt;</span> x
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> idivCeil (x<span class="symbol">:</span><span class="type-name">Int</span>) (y<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> idiv x y <span class="symbol">+</span> <span class="type-name">BToI</span> (rem x y <span class="symbol">/=</span> 0)
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> intdiv2 (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> %shr x 1
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> intpow2 (power<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> %shl 1 power
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> isOdd  (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Bool</span> <span class="symbol">=</span> rem x 2 <span class="symbol">==</span> 1
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> isEven (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Bool</span> <span class="symbol">=</span> rem x 2 <span class="symbol">==</span> 0
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> isPowerOf2 (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Bool</span> <span class="symbol">=</span>
+  <span class="comment">-- A fast trick based on bitwise AND.
+</span>  <span class="comment">-- This works on integer types larger than 8 bits.
+</span>  <span class="comment">-- Note: The bitwise and operator (.&amp;.)
+</span>  <span class="comment">-- is only defined for Byte, which is why
+</span>  <span class="comment">-- we use %and here. TODO: Make (.&amp;.) polymorphic.
+</span>  <span class="keyword">if</span> x <span class="symbol">==</span> 0
+    <span class="keyword">then</span> <span class="type-name">False</span>
+    <span class="keyword">else</span> 0 <span class="symbol">==</span> %and x (x <span class="symbol">-</span> 1)
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> intlog2 (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span>
+  yieldState (<span class="symbol">-</span>1) <span class="symbol">\</span>ansRef<span class="symbol">.</span>
+    runState 1 <span class="symbol">\</span>cmpRef<span class="symbol">.</span>
+      while <span class="keyword">do</span>
+        <span class="keyword">if</span> x <span class="symbol">&gt;=</span> (get cmpRef)
+          <span class="keyword">then</span>
+            ansRef <span class="symbol">:=</span> (get ansRef) <span class="symbol">+</span> 1
+            cmpRef <span class="symbol">:=</span> %shl (get cmpRef) 1
+            <span class="type-name">True</span>
+          <span class="keyword">else</span>
+            <span class="type-name">False</span>
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> nextpow2 (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> <span class="keyword">case</span> isPowerOf2 x <span class="keyword">of</span>
+  <span class="type-name">True</span> <span class="symbol">-&gt;</span> x
+  <span class="type-name">False</span> <span class="symbol">-&gt;</span> intpow2 (1 <span class="symbol">+</span> intlog2 x)
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> generalIntegerPower (times<span class="command">:a</span><span class="symbol">-&gt;</span>a<span class="symbol">-&gt;</span>a) (one<span class="command">:a</span>) (base<span class="command">:a</span>) (power<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> a <span class="symbol">=</span>
+  <span class="comment">-- Implements exponentiation by squaring.
+</span>  <span class="comment">-- Todo: Make power a Nat when it&#39;s available.
+</span>  <span class="comment">-- This could be nicer if there were a way to explicitly
+</span>  <span class="comment">-- specify which typelcass instance to use for Mul.
+</span>  yieldState one <span class="symbol">\</span>ans<span class="symbol">.</span>
+    withState power <span class="symbol">\</span>pow<span class="symbol">.</span> withState base <span class="symbol">\</span>z<span class="symbol">.</span>
+      while <span class="keyword">do</span>
+        <span class="keyword">if</span> get pow <span class="symbol">&gt;</span> 0
+          <span class="keyword">then</span>
+            <span class="keyword">if</span> isOdd (get pow)
+              <span class="keyword">then</span> ans <span class="symbol">:=</span> times (get ans) (get z)
+            z <span class="symbol">:=</span> times (get z) (get z)
+            pow <span class="symbol">:=</span> intdiv2 (get pow)
+            <span class="type-name">True</span>
+          <span class="keyword">else</span>
+            <span class="type-name">False</span>
+</div></div><div class="cell"><div class="code-block">
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> intpow [<span class="type-name">Mul</span> a] (base<span class="command">:a</span>) (power<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> a <span class="symbol">=</span>
+  generalIntegerPower (<span class="symbol">*</span>) one base power
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> fromJust (x<span class="symbol">:</span><span class="type-name">Maybe</span> a) <span class="symbol">:</span> a <span class="symbol">=</span> <span class="keyword">case</span> x <span class="keyword">of</span> <span class="type-name">Just</span> x&#39; <span class="symbol">-&gt;</span> x&#39;
 </div></div><div class="cell"><div class="code-block">
@@ -2033,7 +2179,6 @@ Not to be confused with a partially applied function</p>
         eltIdx <span class="symbol">:=</span> eltIdxVal <span class="symbol">+</span> 1
         xs<span class="symbol">.</span>(eltIdxVal<span class="symbol">@</span>_)
 </div></div><div class="cell"><div class="code-block">
-
 </div></div><div class="cell"><div class="prose-block"><h2>Probability</h2>
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> cumSumLow (xs<span class="symbol">:</span> n<span class="symbol">=&gt;</span><span class="type-name">Float</span>) <span class="symbol">:</span> n<span class="symbol">=&gt;</span><span class="type-name">Float</span> <span class="symbol">=</span>
   withState 0<span class="symbol">.</span>0 <span class="symbol">\</span>total<span class="symbol">.</span>

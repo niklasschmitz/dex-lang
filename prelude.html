@@ -883,15 +883,15 @@ Many, but not all of these functions are <a href="https://en.wikipedia.org/wiki/
 </div></div><div class="cell"><div class="code-block"><span class="comment">-- Todo: better numerics for very large and small values.
 </span></div></div><div class="cell"><div class="code-block"><span class="comment">-- Using %exp here to avoid circular definition problems.
 </span></div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> float32_sinh (x<span class="symbol">:</span><span class="type-name">Float32</span>) <span class="symbol">:</span> <span class="type-name">Float32</span> <span class="symbol">=</span> %fdiv (%fsub (%exp x) (%exp (%fsub 0<span class="symbol">.</span>0 x))) 2<span class="symbol">.</span>0
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> float32_cosh (x<span class="symbol">:</span><span class="type-name">Float32</span>) <span class="symbol">:</span> <span class="type-name">Float32</span> <span class="symbol">=</span> %fdiv ((%exp x) <span class="symbol">+</span> (%exp (%fsub 0<span class="symbol">.</span>0 x))) 2<span class="symbol">.</span>0
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> float32_tanh (x<span class="symbol">:</span><span class="type-name">Float32</span>) <span class="symbol">:</span> <span class="type-name">Float32</span> <span class="symbol">=</span> %fdiv (%fsub (%exp x) (%exp (%fsub 0<span class="symbol">.</span>0 x))) ((%exp x) <span class="symbol">+</span> (%exp (%fsub 0<span class="symbol">.</span>0 x)))
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> float32_cosh (x<span class="symbol">:</span><span class="type-name">Float32</span>) <span class="symbol">:</span> <span class="type-name">Float32</span> <span class="symbol">=</span> %fdiv (%fadd (%exp x) (%exp (%fsub 0<span class="symbol">.</span>0 x))) 2<span class="symbol">.</span>0
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> float32_tanh (x<span class="symbol">:</span><span class="type-name">Float32</span>) <span class="symbol">:</span> <span class="type-name">Float32</span> <span class="symbol">=</span> %fdiv (%fsub (%exp x) (%exp (%fsub 0<span class="symbol">.</span>0 x))) (%fadd (%exp x) (%exp (%fsub 0<span class="symbol">.</span>0 x)))
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="comment">-- Todo: unify this with float32 functions.
 </span></div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> float64_sinh (x<span class="symbol">:</span><span class="type-name">Float64</span>) <span class="symbol">:</span> <span class="type-name">Float64</span> <span class="symbol">=</span> %fdiv (%fsub (%exp x) (%exp (%fsub (<span class="type-name">FToF64</span> 0<span class="symbol">.</span>0) x))) (<span class="type-name">FToF64</span> 2<span class="symbol">.</span>0)
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> float64_cosh (x<span class="symbol">:</span><span class="type-name">Float64</span>) <span class="symbol">:</span> <span class="type-name">Float64</span> <span class="symbol">=</span> %fdiv ((%exp x) <span class="symbol">+</span> (%exp (%fsub (<span class="type-name">FToF64</span> 0<span class="symbol">.</span>0) x))) (<span class="type-name">FToF64</span> 2<span class="symbol">.</span>0)
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> float64_tanh (x<span class="symbol">:</span><span class="type-name">Float64</span>) <span class="symbol">:</span> <span class="type-name">Float64</span> <span class="symbol">=</span> %fdiv (%fsub (%exp x) (%exp (%fsub (<span class="type-name">FToF64</span> 0<span class="symbol">.</span>0) x))) ((%exp x) <span class="symbol">+</span> (%exp (%fsub (<span class="type-name">FToF64</span> 0<span class="symbol">.</span>0) x)))
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> float64_cosh (x<span class="symbol">:</span><span class="type-name">Float64</span>) <span class="symbol">:</span> <span class="type-name">Float64</span> <span class="symbol">=</span> %fdiv (%fadd (%exp x) (%exp (%fsub (<span class="type-name">FToF64</span> 0<span class="symbol">.</span>0) x))) (<span class="type-name">FToF64</span> 2<span class="symbol">.</span>0)
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> float64_tanh (x<span class="symbol">:</span><span class="type-name">Float64</span>) <span class="symbol">:</span> <span class="type-name">Float64</span> <span class="symbol">=</span> (%fdiv (%fsub (%exp x) (%exp (%fsub (<span class="type-name">FToF64</span> 0<span class="symbol">.</span>0) x)))
+                                                (%fadd (%exp x) (%exp (%fsub (<span class="type-name">FToF64</span> 0<span class="symbol">.</span>0) x))))
 </div></div><div class="cell"><div class="code-block">
-
 </div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Floating</span> <span class="type-name">Float64</span>
   exp    <span class="symbol">=</span> <span class="symbol">\</span>x<span class="symbol">.</span> %exp x
   exp2   <span class="symbol">=</span> <span class="symbol">\</span>x<span class="symbol">.</span> %exp2   x
@@ -955,38 +955,30 @@ Many, but not all of these functions are <a href="https://en.wikipedia.org/wiki/
   (<span class="type-name">MkPtr</span> rawPtr) <span class="symbol">=</span> ptr
   <span class="type-name">MkPtr</span> rawPtr
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="comment">-- Is there a better way to select the right instance for `storageSize`??
-</span></div></div><div class="cell"><div class="code-block"><span class="keyword">data</span> <span class="type-name">TypeVehicle</span> a <span class="symbol">=</span> <span class="type-name">MkTypeVehicle</span>
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> typeVehicle (a<span class="symbol">:</span><span class="type-name">Type</span>) <span class="symbol">:</span> <span class="type-name">TypeVehicle</span> a <span class="symbol">=</span> <span class="type-name">MkTypeVehicle</span>
-</div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">interface</span> <span class="type-name">Storable</span> a
   store <span class="symbol">:</span> <span class="type-name">Ptr</span> a <span class="symbol">-&gt;</span> a <span class="symbol">-&gt;</span> {<span class="type-name">IO</span>} <span class="type-name">Unit</span>
   load  <span class="symbol">:</span> <span class="type-name">Ptr</span> a <span class="symbol">-&gt;</span>      {<span class="type-name">IO</span>} a
-  storageSize_ <span class="symbol">:</span> <span class="type-name">TypeVehicle</span> a <span class="symbol">-&gt;</span> <span class="type-name">Int</span>
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> storageSize (a<span class="symbol">:</span><span class="type-name">Type</span>) <span class="symbol">-&gt;</span> (d<span class="symbol">:</span><span class="type-name">Storable</span> a) <span class="symbol">?=&gt;</span> <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span>
-  tv <span class="symbol">:</span> <span class="type-name">TypeVehicle</span> a <span class="symbol">=</span> <span class="type-name">MkTypeVehicle</span>
-  storageSize_ tv
+  storageSize a <span class="symbol">:</span> <span class="type-name">Int</span>
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Storable</span> <span class="type-name">Word8</span>
   store <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr) x<span class="symbol">.</span> %ptrStore ptr x
   load  <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr)  <span class="symbol">.</span> %ptrLoad  ptr
-  storageSize_ <span class="symbol">=</span> const 1
+  storageSize <span class="symbol">=</span> 1
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Storable</span> <span class="type-name">Int32</span>
   store <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr) x<span class="symbol">.</span> %ptrStore (internalCast %<span class="type-name">Int32Ptr</span> ptr) x
   load  <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr)  <span class="symbol">.</span> %ptrLoad  (internalCast %<span class="type-name">Int32Ptr</span> ptr)
-  storageSize_ <span class="symbol">=</span> const 4
+  storageSize <span class="symbol">=</span> 4
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Storable</span> <span class="type-name">Float32</span>
   store <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr) x<span class="symbol">.</span> %ptrStore (internalCast %<span class="type-name">Float32Ptr</span> ptr) x
   load <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr)   <span class="symbol">.</span> %ptrLoad  (internalCast %<span class="type-name">Float32Ptr</span> ptr)
-  storageSize_ <span class="symbol">=</span> const 4
+  storageSize <span class="symbol">=</span> 4
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">instance</span> <span class="type-name">Storable</span> (<span class="type-name">Ptr</span> a)
   store <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr) (<span class="type-name">MkPtr</span> x)<span class="symbol">.</span>         %ptrStore (internalCast %<span class="type-name">PtrPtr</span> ptr) x
   load  <span class="symbol">=</span> <span class="symbol">\</span>(<span class="type-name">MkPtr</span> ptr)          <span class="symbol">.</span> <span class="type-name">MkPtr</span> <span class="symbol">$</span> %ptrLoad  (internalCast %<span class="type-name">PtrPtr</span> ptr)
-  storageSize_ <span class="symbol">=</span> const 8  <span class="comment">-- TODO: something more portable?
+  storageSize <span class="symbol">=</span> 8  <span class="comment">-- TODO: something more portable?
 </span></div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="comment">-- TODO: Storable instances for other types
 </span></div></div><div class="cell"><div class="code-block">
@@ -1598,20 +1590,6 @@ Nor does it promise a particular level of precision for numeric values.</p>
     <span class="type-name">Just</span> ans <span class="symbol">-&gt;</span> ans
     <span class="type-name">Nothing</span> <span class="symbol">-&gt;</span> unreachable ()
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="comment">-- XXX: used internally by compiler for exceptional while
-</span></div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> whileMaybe (eff<span class="symbol">:</span><span class="type-name">Effects</span>) <span class="symbol">-&gt;</span> (body<span class="symbol">:</span> <span class="type-name">Unit</span> <span class="symbol">-&gt;</span> {<span class="symbol">|</span>eff} (<span class="type-name">Maybe</span> <span class="type-name">Word8</span>)) <span class="symbol">:</span> {<span class="symbol">|</span>eff} <span class="type-name">Maybe</span> <span class="type-name">Unit</span> <span class="symbol">=</span>
-  hadError <span class="symbol">=</span> yieldState <span class="type-name">False</span> <span class="symbol">\</span>ref<span class="symbol">.</span>
-    while <span class="keyword">do</span>
-      ans <span class="symbol">=</span> liftState ref body ()
-      <span class="keyword">case</span> ans <span class="keyword">of</span>
-        <span class="type-name">Nothing</span> <span class="symbol">-&gt;</span>
-          ref <span class="symbol">:=</span> <span class="type-name">True</span>
-          <span class="type-name">False</span>
-        <span class="type-name">Just</span> cond <span class="symbol">-&gt;</span> <span class="type-name">W8ToB</span> cond
-  <span class="keyword">if</span> hadError
-    <span class="keyword">then</span> <span class="type-name">Nothing</span>
-    <span class="keyword">else</span> <span class="type-name">Just</span> ()
-</div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> boundedIter (maxIters<span class="symbol">:</span><span class="type-name">Int</span>) (fallback<span class="command">:a</span>)
   (body<span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">-&gt;</span> {<span class="symbol">|</span>eff} <span class="type-name">IterResult</span> a) <span class="symbol">:</span> {<span class="symbol">|</span>eff} a  <span class="symbol">=</span>
   iter <span class="symbol">\</span>i<span class="symbol">.</span>
@@ -1657,7 +1635,7 @@ Nor does it promise a particular level of precision for numeric values.</p>
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="prose-block"><h3>Print</h3>
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> getOutputStream (_<span class="symbol">:</span><span class="type-name">Unit</span>) <span class="symbol">:</span> {<span class="type-name">IO</span>} <span class="type-name">Stream</span> <span class="type-name">WriteMode</span> <span class="symbol">=</span>
-  <span class="type-name">MkStream</span> <span class="symbol">$</span> %ptrLoad <span class="type-name">OUT</span>_<span class="type-name">STREAM</span>_<span class="type-name">PTR</span>
+  <span class="type-name">MkStream</span> <span class="symbol">$</span> %ptrLoad %outputStreamPtr
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> print (s<span class="symbol">:</span><span class="type-name">String</span>) <span class="symbol">:</span> {<span class="type-name">IO</span>} <span class="type-name">Unit</span> <span class="symbol">=</span>
   fwrite (getOutputStream ()) (s <span class="symbol">&lt;&gt;</span> &quot;<span class="symbol">\</span>n&quot;)
@@ -2087,8 +2065,8 @@ Such as <code>randMat</code> with samples from the distribution of floating poin
       <span class="type-name">False</span> <span class="symbol">-&gt;</span> x
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> idivCeil (x<span class="symbol">:</span><span class="type-name">Int</span>) (y<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> idiv x y <span class="symbol">+</span> <span class="type-name">BToI</span> (rem x y <span class="symbol">/=</span> 0)
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> intdiv2 (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> %shr x 1
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> intpow2 (power<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> %shl 1 power
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> intdiv2 (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> %shr x (1 <span class="symbol">:</span> <span class="type-name">Int</span>)
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> intpow2 (power<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Int</span> <span class="symbol">=</span> %shl (1 <span class="symbol">:</span> <span class="type-name">Int</span>) power
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> isOdd  (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Bool</span> <span class="symbol">=</span> rem x 2 <span class="symbol">==</span> 1
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> isEven (x<span class="symbol">:</span><span class="type-name">Int</span>) <span class="symbol">:</span> <span class="type-name">Bool</span> <span class="symbol">=</span> rem x 2 <span class="symbol">==</span> 0
 </div></div><div class="cell"><div class="code-block">
@@ -2109,7 +2087,7 @@ Such as <code>randMat</code> with samples from the distribution of floating poin
         <span class="keyword">if</span> x <span class="symbol">&gt;=</span> (get cmpRef)
           <span class="keyword">then</span>
             ansRef <span class="symbol">:=</span> (get ansRef) <span class="symbol">+</span> 1
-            cmpRef <span class="symbol">:=</span> %shl (get cmpRef) 1
+            cmpRef <span class="symbol">:=</span> %shl (get cmpRef) (1 <span class="symbol">:</span> <span class="type-name">Int</span>)
             <span class="type-name">True</span>
           <span class="keyword">else</span>
             <span class="type-name">False</span>
@@ -2143,8 +2121,7 @@ Such as <code>randMat</code> with samples from the distribution of floating poin
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> anySat (f<span class="command">:a</span> <span class="symbol">-&gt;</span> <span class="type-name">Bool</span>) (xs<span class="command">:n</span><span class="symbol">=&gt;</span>a) <span class="symbol">:</span> <span class="type-name">Bool</span> <span class="symbol">=</span> any (map f xs)
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="comment">-- XXX: we use this internally so it&#39;s important to make the type args explicit
-</span></div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> seqMaybes (n<span class="symbol">:</span><span class="type-name">Type</span>) <span class="symbol">?-&gt;</span> (a<span class="symbol">:</span><span class="type-name">Type</span>) <span class="symbol">?-&gt;</span> (xs <span class="symbol">:</span> n<span class="symbol">=&gt;</span><span class="type-name">Maybe</span> a) <span class="symbol">:</span> <span class="type-name">Maybe</span> (n <span class="symbol">=&gt;</span> a) <span class="symbol">=</span>
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> seqMaybes (n<span class="symbol">:</span><span class="type-name">Type</span>) <span class="symbol">?-&gt;</span> (a<span class="symbol">:</span><span class="type-name">Type</span>) <span class="symbol">?-&gt;</span> (xs <span class="symbol">:</span> n<span class="symbol">=&gt;</span><span class="type-name">Maybe</span> a) <span class="symbol">:</span> <span class="type-name">Maybe</span> (n <span class="symbol">=&gt;</span> a) <span class="symbol">=</span>
   <span class="comment">-- is it possible to implement this safely? (i.e. without using partial
 </span>  <span class="comment">-- functions)
 </span>  <span class="keyword">case</span> anySat isNothing xs <span class="keyword">of</span>
@@ -2235,7 +2212,10 @@ Such as <code>randMat</code> with samples from the distribution of floating poin
 </div></div><div class="cell"><div class="prose-block"><h2>Exception effect</h2>
 <p>TODO: move <code>error</code> and <code>todo</code> to here.</p>
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> catch (f<span class="symbol">:</span><span class="type-name">Unit</span> <span class="symbol">-&gt;</span> {<span class="type-name">Except</span><span class="symbol">|</span>eff} a) <span class="symbol">:</span> {<span class="symbol">|</span>eff} <span class="type-name">Maybe</span> a <span class="symbol">=</span>
-  %catchException f
+  ans <span class="symbol">=</span> %catchException f
+  <span class="keyword">case</span> %sumToVariant ans <span class="keyword">of</span>
+    {<span class="symbol">|</span>c<span class="symbol">=</span>()   <span class="symbol">|</span>} <span class="symbol">-&gt;</span> <span class="type-name">Nothing</span>
+    {<span class="symbol">|</span>c<span class="symbol">|</span>c<span class="symbol">=</span>val<span class="symbol">|</span>} <span class="symbol">-&gt;</span> <span class="type-name">Just</span> val
 </div></div><div class="cell"><div class="code-block">
 </div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> throw (_<span class="symbol">:</span><span class="type-name">Unit</span>) <span class="symbol">:</span> {<span class="type-name">Except</span>} a <span class="symbol">=</span>
   %throwException a

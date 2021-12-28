@@ -1,0 +1,35 @@
+def f (x:m=>Float) : Float =
+    exp (0.5 * sum for i. sq x.i)
+
+def hvpf (x:m=>Float) (v:m=>Float) : m=>Float =
+    (dot x v) .* (grad f x) + f(x) .* v
+
+x = [0.1, 0.2, 0.3]
+v = [0.2, 0.3, 0.4]
+f x
+> 1.072508
+
+-- analytic
+hvpf x v
+> [0.235952, 0.364653, 0.493354]
+
+-- finite diff over reverse
+eps = 0.0001
+(grad f (x + eps .* v) - grad f x) / eps
+> [0.235885, 0.364631, 0.493228]
+
+-- reverse over forward
+grad (\x. jvp f x v) x
+> [0.235952, 0.364653, 0.493354]
+
+-- reverse over reverse -- breaks
+-- grad (\x. dot (grad f x) v) x
+> AD of Accum effect only supported when the base monoid is (0, +) on Float
+> CallStack (from HasCallStack):
+>   error, called at src/lib/Autodiff.hs:279:7 in dex-0.1.0.0-KC2OgnYnAXsK6o9fCGTvOZ:Autodiff
+
+-- forward over reverse -- breaks
+-- jvp (grad f) x v
+> AD of Accum effect only supported when the base monoid is (0, +) on Float
+> CallStack (from HasCallStack):
+>   error, called at src/lib/Autodiff.hs:279:7 in dex-0.1.0.0-KC2OgnYnAXsK6o9fCGTvOZ:Autodiff

@@ -305,42 +305,36 @@ function render(renderMode) {
         };
     }
 }
-render(RENDER_MODE.STATIC);"></script></head><body><div id="main-output"><div class="cell"><div class="code-block"></div></div><div class="cell"><div class="prose-block"><h1>PSD Solver Based on Cholesky Decomposition</h1>
-</div></div><div class="cell"><div class="code-block"><span class="keyword">import</span> linalg
+render(RENDER_MODE.STATIC);"></script></head><body><div id="main-output"><div class="cell"><div class="code-block"></div></div><div class="cell"><div class="prose-block"><h1>Netpbm</h1>
+</div></div><div class="cell"><div class="prose-block"><p>This is a basic loader for the .ppm P6 image format.</p>
+</div></div><div class="cell"><div class="code-block"><span class="keyword">import</span> parser
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> psdsolve {n} (mat<span class="command">:n</span><span class="symbol">=&gt;</span>n<span class="symbol">=&gt;</span><span class="type-name">Float</span>) (b<span class="command">:n</span><span class="symbol">=&gt;</span><span class="type-name">Float</span>) <span class="symbol">:</span> n<span class="symbol">=&gt;</span><span class="type-name">Float</span> <span class="symbol">=</span>
-  l <span class="symbol">=</span> chol mat
-  b&#39; <span class="symbol">=</span> forward_substitute l b
-  u <span class="symbol">=</span> transpose_lower_to_upper l
-  backward_substitute u b&#39;
+</div></div><div class="cell"><div class="code-block"><span class="keyword">data</span> <span class="type-name">Image</span> <span class="symbol">=</span>
+  <span class="type-name">MkImage</span> rows<span class="symbol">:</span><span class="type-name">Nat</span> cols<span class="symbol">:</span><span class="type-name">Nat</span> pixels<span class="symbol">:</span>(<span class="type-name">Fin</span> rows <span class="symbol">=&gt;</span> <span class="type-name">Fin</span> cols <span class="symbol">=&gt;</span> <span class="type-name">Fin</span> 3 <span class="symbol">=&gt;</span> <span class="type-name">Word8</span>)
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="prose-block"><p>Test</p>
-</div></div><div class="cell"><div class="code-block"><span class="type-name">N</span> <span class="symbol">=</span> <span class="type-name">Fin</span> 4
-</div></div><div class="cell"><div class="code-block">[k1<span class="symbol">,</span> k2] <span class="symbol">=</span> split_key <span class="symbol">$</span> new_key 0
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> parse_p6 <span class="symbol">:</span> <span class="type-name">Parser</span> <span class="type-name">Image</span> <span class="symbol">=</span> <span class="type-name">MkParser</span> <span class="symbol">\</span>h<span class="symbol">.</span>
+  <span class="comment">-- Loads a raw PPM file in P6 format.
+</span>  <span class="comment">-- The header will look something like:
+</span>  <span class="comment">--   P6
+</span>  <span class="comment">--   220 220    (width, height)
+</span>  <span class="comment">--   255        (max color value)
+</span>  <span class="comment">-- followed by a flat block of height x width x 3 chars.
+</span>  parse h <span class="symbol">$</span> p_char &#39;<span class="type-name">P</span>&#39;
+  parse h <span class="symbol">$</span> p_char &#39;6&#39;
+  parse h <span class="symbol">$</span> parse_any
+  cols <span class="symbol">=</span> i32_to_n <span class="symbol">$</span> parse h <span class="symbol">$</span> parse_unsigned_int
+  parse h <span class="symbol">$</span> parse_any
+  rows <span class="symbol">=</span> i32_to_n <span class="symbol">$</span> parse h <span class="symbol">$</span> parse_unsigned_int
+  parse h <span class="symbol">$</span> parse_any
+  colorsize <span class="symbol">=</span> i32_to_n <span class="symbol">$</span> parse h <span class="symbol">$</span> parse_unsigned_int
+  parse h <span class="symbol">$</span> parse_any
+  pixels <span class="symbol">=</span> <span class="keyword">for</span> r<span class="symbol">:</span>(<span class="type-name">Fin</span> rows)<span class="symbol">.</span>
+    <span class="keyword">for</span> c<span class="symbol">:</span>(<span class="type-name">Fin</span> cols)<span class="symbol">.</span>
+      <span class="keyword">for</span> c<span class="symbol">:</span>(<span class="type-name">Fin</span> 3)<span class="symbol">.</span>
+        parse h parse_any
+  <span class="type-name">MkImage</span> rows cols pixels
 </div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block">psd <span class="symbol">:</span> <span class="type-name">N</span><span class="symbol">=&gt;</span><span class="type-name">N</span><span class="symbol">=&gt;</span><span class="type-name">Float</span> <span class="symbol">=</span>
-  a <span class="symbol">=</span> <span class="keyword">for</span> i<span class="symbol">:</span><span class="type-name">N</span> j<span class="symbol">:</span><span class="type-name">N</span><span class="symbol">.</span> randn <span class="symbol">$</span> ixkey k1 (i<span class="symbol">,</span> j)
-  x <span class="symbol">=</span> a <span class="symbol">**</span> transpose a
-  x <span class="symbol">+</span> eye
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> padLowerTriMat {n v} [<span class="type-name">Add</span> v] (mat<span class="symbol">:</span><span class="type-name">LowerTriMat</span> n v) <span class="symbol">:</span> n<span class="symbol">=&gt;</span>n<span class="symbol">=&gt;</span>v <span class="symbol">=</span>
-  <span class="keyword">for</span> i j<span class="symbol">.</span>
-    <span class="keyword">if</span> (ordinal j)<span class="symbol">&lt;=</span>(ordinal i)
-      <span class="keyword">then</span> mat<span class="symbol">.</span>i<span class="symbol">.</span>(unsafe_project _ j)
-      <span class="keyword">else</span> zero
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block">l <span class="symbol">=</span> chol psd
-</div></div><div class="cell"><div class="code-block">l_full <span class="symbol">=</span> padLowerTriMat l
-</div></div><div class="cell"><div class="code-block"><span class="command">:p</span> l_full
-</div><div class="result-block">[ [1.621016, 0., 0., 0.]
-, [0.779301, 2.965358, 0., 0.]
-, [-0.644939, 1.054188, 2.194109, 0.]
-, [0.162014, -1.009056, -1.49802, 1.355752] ]</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block">psdReconstructed <span class="symbol">=</span> l_full <span class="symbol">**</span> transpose l_full
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block"><span class="command">:p</span> sum <span class="keyword">for</span> (i<span class="symbol">,</span> j)<span class="symbol">.</span> sq (psd<span class="symbol">.</span>i<span class="symbol">.</span>j <span class="symbol">-</span> psdReconstructed<span class="symbol">.</span>i<span class="symbol">.</span>j)
-</div><div class="result-block">0.</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block">vec <span class="symbol">:</span> <span class="type-name">N</span><span class="symbol">=&gt;</span><span class="type-name">Float</span> <span class="symbol">=</span> arb k2
-</div></div><div class="cell"><div class="code-block">
-</div></div><div class="cell"><div class="code-block">vec <span class="symbol">~~</span> (psd <span class="symbol">**.</span> psdsolve psd vec)
-</div><div class="result-block">True</div></div></div></body></html>
+</div></div><div class="cell"><div class="code-block"><span class="keyword">def</span> load_image_p6 (filename<span class="symbol">:</span><span class="type-name">String</span>) <span class="symbol">:</span> <span class="type-name">Maybe</span> <span class="type-name">Image</span> <span class="symbol">=</span>
+  image_raw <span class="symbol">=</span> unsafe_io <span class="keyword">do</span> read_file filename
+  run_parser_partial image_raw parse_p6
+</div></div></div></body></html>

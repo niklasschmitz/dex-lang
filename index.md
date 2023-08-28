@@ -19,7 +19,6 @@
 - [examples/ctc.dx](examples/ctc.html) [Connectionist Temporal Classification](https://www.cs.toronto.edu/~graves/icml_2006.pdf)
 - [examples/raytrace.dx](examples/raytrace.html) Multi-step Ray Tracer
 - [examples/particle-filter.dx](examples/particle-filter.html) Particle Filter
-- [examples/isomorphisms.dx](examples/isomorphisms.html) Isomorphisms in Dex
 - [examples/fluidsim.dx](examples/fluidsim.html) Fluid Simulation
 - [examples/sgd.dx](examples/sgd.html) Stochastic Gradient Descent with Momentum
 - [examples/psd.dx](examples/psd.html) PSD Solver Based on Cholesky Decomposition
@@ -34,13 +33,14 @@
 - [examples/dither.dx](examples/dither.html) Dither.dx
 - [examples/mcts.dx](examples/mcts.html) Monte Carlo Tree Search
 - [examples/md.dx](examples/md.html) Molecular Dynamics in Dex
+- [examples/bfgs.dx](examples/bfgs.html) BFGS optimizer
 - [examples/levenshtein-distance.dx](examples/levenshtein-distance.html) Levenshtein Distance
 
 ## Libraries
 
 - [lib/prelude.dx](prelude.html): The Dex Prelude (automatically imported)
+- [lib/linalg.dx](lib/linalg.html) Linear Algebra
 - [lib/netpbm.dx](lib/netpbm.html) Netpbm
-- [lib/sort.dx](lib/sort.html) Monoidal Merge Sort
 - [lib/parser.dx](lib/parser.html) Parser Combinators
 - [lib/fft.dx](lib/fft.html) Fast Fourier Transform
 - [lib/diagram.dx](lib/diagram.html) Vector Graphics
@@ -48,5 +48,5 @@
 - [lib/png.dx](lib/png.html) PNG Rendering
 - [lib/plot.dx](lib/plot.html) Plotting
 - [lib/complex.dx](lib/complex.html) Complex number support
-- [lib/linalg.dx](lib/linalg.html) Linear Algebra
+- [lib/sort.dx](lib/sort.html) Monoidal Merge Sort
 - [lib/set.dx](lib/set.html) Sets and Set-Indexed Arrays
